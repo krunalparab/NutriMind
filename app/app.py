@@ -51,6 +51,15 @@ def create_app():
 
     CORS(app)
 
+    # Pre-warm the recipe dataset in the master process (gunicorn --preload)
+    # Workers fork from master and inherit this via copy-on-write — only ONE copy in RAM
+    try:
+        from main import get_dataset
+        get_dataset()
+        print("[startup] Recipe dataset loaded and ready.", flush=True)
+    except Exception as _e:
+        print(f"[startup] WARNING: Could not pre-load dataset: {_e}", flush=True)
+
     # Register blueprints
     app.register_blueprint(pages_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
