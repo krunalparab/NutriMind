@@ -1,7 +1,9 @@
-# Exclude large dataset — downloaded at startup via GitHub LFS media URL
+# Large data files — downloaded from GitHub LFS during build (see nixpacks.toml)
 updated.csv
 updated_dataset.csv
 dataset.csv
+recipes.parquet
+instructions.db
 
 # Dev stuff
 .venv/
