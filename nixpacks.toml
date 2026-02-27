@@ -1,7 +1,8 @@
 [phases.build]
 cmds = [
     "pip install -r requirements.txt",
-    "curl -L 'https://media.githubusercontent.com/media/Anoop1925/NutriVision/master/updated.csv' -o updated.csv && echo '[build] updated.csv ready' || echo '[build] WARNING: CSV download failed'"
+    "curl -L 'https://media.githubusercontent.com/media/krunalparab/NutriMind/master/updated.csv' -o updated.csv && echo '[build] CSV downloaded' || echo '[build] WARNING: CSV download failed'",
+    "python convert_dataset.py && echo '[build] Dataset converted OK' || echo '[build] WARNING: conversion failed'"
 ]
 
 [start]

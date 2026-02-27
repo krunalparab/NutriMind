@@ -5,6 +5,7 @@ gunicorn>=21.0
 
 # Data & ML
 pandas>=2.0
+pyarrow>=14.0
 numpy>=1.26
 scikit-learn>=1.3
 

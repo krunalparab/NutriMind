@@ -1,8 +1,8 @@
-import sys, os, urllib.request, threading
+import sys, os
 
 # Absolute path to this file's directory (foodai/app/)
 _app_dir = os.path.dirname(os.path.abspath(__file__))
-# Parent = foodai/ — where updated.csv, main.py, model.py etc. live
+# Parent = foodai/ — where recipes.parquet, instructions.db, main.py, model.py etc. live
 _parent = os.path.abspath(os.path.join(_app_dir, '..'))
 
 # Add both directories to sys.path so all imports resolve
@@ -12,26 +12,16 @@ for _p in (_app_dir, _parent):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-# Change cwd to foodai/ so relative CSV reads work
+# Change cwd to foodai/ so relative file paths work
 os.chdir(_parent)
 
-# ── Non-blocking CSV download fallback (Railway downloads during build via nixpacks) ──
-_CSV_PATH = os.path.join(_parent, 'updated.csv')
-_CSV_URL  = "https://media.githubusercontent.com/media/Anoop1925/NutriVision/master/updated.csv"
-
-def _download_csv_bg():
-    if not os.path.exists(_CSV_PATH):
-        print("[startup] updated.csv not found — downloading in background …", flush=True)
-        try:
-            urllib.request.urlretrieve(_CSV_URL, _CSV_PATH)
-            print(f"[startup] updated.csv ready ({os.path.getsize(_CSV_PATH)//1024//1024} MB)", flush=True)
-        except Exception as e:
-            print(f"[startup] WARNING: could not download updated.csv: {e}", flush=True)
+# ── Startup checks ────────────────────────────────────────────────────────────
+for _f in ('recipes.parquet', 'instructions.db'):
+    _fp = os.path.join(_parent, _f)
+    if os.path.exists(_fp):
+        print(f"[startup] {_f} present ({os.path.getsize(_fp)//1024//1024} MB)", flush=True)
     else:
-        print(f"[startup] updated.csv present ({os.path.getsize(_CSV_PATH)//1024//1024} MB)", flush=True)
-
-# Start in background — workers boot immediately; CSV is pre-downloaded during Railway build
-threading.Thread(target=_download_csv_bg, daemon=True).start()
+        print(f"[startup] WARNING: {_f} not found — recipe features will not work", flush=True)
 
 from flask import Flask
 from flask_cors import CORS
