@@ -1,8 +1,9 @@
 [phases.build]
 cmds = [
     "pip install -r requirements.txt",
-    "curl -L 'https://media.githubusercontent.com/media/krunalparab/NutriMind/master/updated.csv' -o updated.csv && echo '[build] CSV downloaded' || echo '[build] WARNING: CSV download failed'",
-    "python convert_dataset.py && echo '[build] Dataset converted OK' || echo '[build] WARNING: conversion failed'"
+    "curl -L 'https://media.githubusercontent.com/media/krunalparab/NutriMind/master/recipes.parquet' -o recipes.parquet && echo '[build] recipes.parquet ready' || echo '[build] WARNING: parquet download failed'",
+    "curl -L 'https://media.githubusercontent.com/media/krunalparab/NutriMind/master/instructions.db' -o instructions.db && echo '[build] instructions.db ready' || echo '[build] WARNING: db download failed'",
+    "ls -lh recipes.parquet instructions.db 2>/dev/null || echo '[build] WARNING: data files missing'"
 ]
 
 [start]

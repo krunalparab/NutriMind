@@ -36,9 +36,7 @@ updated_dataset.csv
 *.csv
 !updated.csv
 
-# Auto-generated at build time (not committed to git)
-recipes.parquet
-instructions.db
+# recipes.parquet and instructions.db are tracked via Git LFS — do NOT ignore them
 
 veg.ipynb
 
