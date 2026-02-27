@@ -1,10 +1,7 @@
 [phases.build]
 cmds = [
-    "pip install -r requirements.txt",
-    "curl -L 'https://media.githubusercontent.com/media/krunalparab/NutriMind/master/recipes.parquet' -o recipes.parquet && echo '[build] recipes.parquet ready' || echo '[build] WARNING: parquet download failed'",
-    "curl -L 'https://media.githubusercontent.com/media/krunalparab/NutriMind/master/instructions.db' -o instructions.db && echo '[build] instructions.db ready' || echo '[build] WARNING: db download failed'",
-    "ls -lh recipes.parquet instructions.db 2>/dev/null || echo '[build] WARNING: data files missing'"
+    "pip install -r requirements.txt"
 ]
 
 [start]
-cmd = "gunicorn --chdir app 'app:create_app()' --bind 0.0.0.0:$PORT --workers 1 --timeout 120 --preload"
+cmd = "bash start.sh"
